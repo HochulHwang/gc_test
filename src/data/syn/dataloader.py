@@ -16,7 +16,7 @@ from random import shuffle
 import torch.nn.functional as F
 
 
-class NTU(data.Dataset):
+class SYN(data.Dataset):
     """
     A general dataset with fake label
     * root is the directory where are the extracted frames

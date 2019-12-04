@@ -1,5 +1,5 @@
 import argparse
-from data.ntu.dataloader import NTU
+from data.syn.dataloader import SYN
 import torch
 import ipdb
 import time
@@ -9,13 +9,13 @@ from PIL import Image
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
-from data.ntu.dataloader import my_collate
+from data.syn.dataloader import my_collate
 import os
 from matplotlib.patches import Circle
 
 def main(args):
-    # NTU Dataset
-    dataset = NTU(root=args.root,
+    # SYN Dataset
+    dataset = SYN(root=args.root,
                   w=args.width,
                   h=args.height,
                   t=args.time,
@@ -65,14 +65,13 @@ def show_one_img(torch_img, torch_skeleton):
     # Uint8 img
     img_array = np_img.astype('uint8')
     img_array = img_array.transpose([1, 2, 0])
-    # print(img_array.shape)
 
     # Create a figure. Equal aspect so circles look circular
     fig, ax = plt.subplots(1)
-    # ax.set_aspect('equal')
+    ax.set_aspect('equal')
 
     # Show the image
-    # ax.imshow(img_array)
+    ax.imshow(img_array)
 
     # Show the skeleton points
     for j in range(25):
@@ -80,13 +79,14 @@ def show_one_img(torch_img, torch_skeleton):
         ax.add_patch(circ)
 
     # Show the image
-    # plt.show()
+    plt.show()
+    # save the image
+    # plt.savefig('/home/hochul/Desktop/fig.png')
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Video Loader')
     parser.add_argument('--root', metavar='DIR',
-                        # default='/Users/fabien/Datasets/NTU-RGB-D',
                         default='/home/hochul/Desktop/mini_syn_data/',
                         help='path to avi dir')
     parser.add_argument('--avi-dir', metavar='AVI',

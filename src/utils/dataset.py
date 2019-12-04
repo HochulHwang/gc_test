@@ -1,15 +1,15 @@
-from data.ntu.dataloader import NTU, my_collate
+from data.syn.dataloader import SYN, my_collate
 import torch
 import ipdb
 
 def get_datasets_n_loaders(options, cuda=False):
-    # NTU Dataset
-    train_set = NTU(root=options['root'],
+    # SYN Dataset
+    train_set = SYN(root=options['root'],
                     t=options['time'],
                     dataset='train',
                     train=True,
                     usual_transform=True)
-    val_set = NTU(root=options['root'],
+    val_set = SYN(root=options['root'],
                   t=options['time'],
                   dataset='test',
                   train=False,

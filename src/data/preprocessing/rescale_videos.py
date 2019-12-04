@@ -127,17 +127,18 @@ def get_all_videos(dir, extension='mp4'):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Preprocess dataset')
     parser.add_argument('--dir', metavar='DIR',
-                        default='/Users/fabien/Datasets/NTU-RGB-D/avi',
+                        # default='/Users/fabien/Datasets/NTU-RGB-D/avi',
+                        default='/home/hochul/Desktop/mini_syn_data/mini_avi',
                         help='path to avi dir')
     parser.add_argument('--width', default=256, type=int,
                         metavar='W', help='Width')
     parser.add_argument('--height', default=256, type=int,
                         metavar='H', help='Height')
-    parser.add_argument('--fps', default=30, type=int,
+    parser.add_argument('--fps', default=20, type=int,
                         metavar='FPS',
                         help='Frames per second for the extraction, -1 means that we take the fps from the super_video')
     parser.add_argument('--common-suffix', metavar='E',
-                        default='_rgb.avi',
+                        default='.avi',
                         help='Common end of each super_video file')
     parser.add_argument('--crf', default=17, type=int,
                         metavar='CRF',

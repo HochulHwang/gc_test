@@ -128,7 +128,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Preprocess dataset')
     parser.add_argument('--dir', metavar='DIR',
                         # default='/Users/fabien/Datasets/NTU-RGB-D/avi',
-                        default='/home/hochul/Desktop/mini_syn_data/mini_avi',
+                        default='/home/hochul/Desktop/mini_syn_data/avi',
                         help='path to avi dir')
     parser.add_argument('--width', default=256, type=int,
                         metavar='W', help='Width')

@@ -22,11 +22,12 @@ class NTU(data.Dataset):
     * root is the directory where are the extracted frames
     """
 
-    def __init__(self, root, w=224, h=224, t=8, num_classes=60,
-                 avi_dir='avi_256x256_30',
+    # def __init__(self, root, w=224, h=224, t=8, num_classes=60,
+    def __init__(self, root, w=224, h=224, t=8, num_classes=55,
+                 avi_dir='avi_256x256_20',
                  skeleton_dir='skeleton',
                  usual_transform=False,
-                 common_suffix='_rgb.avi',
+                 common_suffix='.avi',
                  train=True,
                  dataset='train'):
         # Usual settings
@@ -51,29 +52,29 @@ class NTU(data.Dataset):
         # Retrieve the real shape of the super_video
         self.retrieve_w_and_h_from_dir()
 
-        # NTU seetings
-        self.max_len_clip = 4 * self.real_fps  # sec by fps -> num of frames
+        # SYN seetings
+        # self.max_len_clip = 4 * self.real_fps  # sec by fps -> num of frames
+        self.max_len_clip = 6 * self.real_fps  # sec by fps -> num of frames
         self.split = 'CS'  # TODO for CV
-        self.original_w, self.original_h = 1920, 1080
+        self.original_w, self.original_h = 256, 256
 
         # NB crops
         self.nb_crops = 5 if self.dataset == 'test' else 1
 
         # ID fo training subjects
-        self.person_id_training = [1, 2, 4, 5, 8, 9, 13, 14, 15, 16, 17, 18, 19, 25, 27, 28, 31, 34, 35, 38]
+        self.person_id_training = [103, 104]
         if self.dataset == 'train':
             self.person_id_to_keep = self.person_id_training
         else:
-            self.person_id_to_keep = list(range(1, 40))
-            self.person_id_to_keep = [p for p in self.person_id_to_keep if p not in self.person_id_training]
+            # self.person_id_to_keep = list(range(103, 106))
+            # self.person_id_to_keep = [p for p in self.person_id_to_keep if p not in self.person_id_training]
+            self.person_id_to_keep = [105]
 
         # Get the videos
         self.list_video, self.dict_video_length = self.get_videos()
 
     @staticmethod
     def load_pickle(file):
-        # file = '/Users/fabien/Datasets/EPIC_KITCHENS_2018/annotations/EPIC_train_action_labels.pkl'
-
         with open(file, mode='rb') as f:
             df = pickle.load(f, encoding='latin1')
 
@@ -120,55 +121,71 @@ class NTU(data.Dataset):
 
     def get_2D_skeleton(self, skeleton_file, timesteps, P=2):
         # Read the full content of a file
-
-        with open(skeleton_file, mode='r') as file:
-            content = file.readlines()
-        content = [c.strip() for c in content]
-
+        # with open(skeleton_file, mode='r') as file:
+            # content = file.readlines()
+        # content = [c.strip() for c in content]
         # Nb of frames
-        T = int(content[0])
-
+        # T = int(content[0])
         # Init the numpy array
-        np_xy_coordinates = np.zeros((T, P, 25, 2)).astype(np.float32)
-
+        # np_xy_coordinates = np.zeros((T, P, 25, 2)).astype(np.float32)
         # Loop over the frames
-        i = 1
-        for t in range(T):
+        # i = 1
+        # for t in range(T):
             # Number of person detected
-            nb_person = int(content[i])
-
+            # nb_person = int(content[i])
             # Loop over the number of person
-            for p in range(nb_person):
-                i = i + 2
-                for j in range(25):
+            # for p in range(nb_person):
+                # i = i + 2
+                # for j in range(25):
                     # Catch the line of j
-                    i = i + 1
-                    content_j = content[i]
-
+                    # i = i + 1
+                    # content_j = content[i]
                     # Slit the line
-                    list_content_j = content_j.split(' ')
-                    list_content_j = [float(c) for c in list_content_j]
-                    xy_coordinates = list_content_j[5:7]
-
+                    # list_content_j = content_j.split(' ')
+                    # list_content_j = [float(c) for c in list_content_j]
+                    # xy_coordinates = list_content_j[5:7]
                     # Add in the numpy array
+                    # try:
+                        # np_xy_coordinates[t, p, j] = xy_coordinates
+                    # except Exception as e:
+                        # pass
+                        # print(e)  # 3 persons e.g
+            # i += 1
+        # How many person in maximum
+        # one_person = np.sum(np_xy_coordinates[:, 1]) == 0.
+        # nb_person = 1 if one_person else 2
+        # Extract only the interesting frames
+        # np_xy_coordinates = np_xy_coordinates[timesteps]
+        # Normalize to 0-1
+        # np_xy_coordinates[:, :, :, 0] /= float(self.original_w)
+        # np_xy_coordinates[:, :, :, 1] /= float(self.original_h)
+        # Replace NaN by 0
+        # np_xy_coordinates = np.nan_to_num(np_xy_coordinates)
+
+        # get_2D_skeleton for SYN data
+        # get person index
+        person_idx = int(skeleton_file[-17:-14])
+        npy_skel = np.load(skeleton_file)
+
+        # AIR
+
+        # SYN
+        skl_rgb_normalized = npy_skel
+        T = len(skl_rgb_normalized)
+        nb_person = 1
+
+        np_xy_coordinates = np.zeros((T, P, 25, 2)).astype(np.float32) # init numpy array
+
+        for frames in range(T):
+            for people in range(nb_person):
+                for joints in range(25):
+                    xy_coordinates = float(skl_rgb_normalized[frames][people][joints][0]), float(skl_rgb_normalized[frames][people][joints][1])
                     try:
-                        np_xy_coordinates[t, p, j] = xy_coordinates
+                        np_xy_coordinates[frames, people, joints] = xy_coordinates
                     except Exception as e:
                         pass
-                        # print(e)  # 3 persons e.g
-
-            i += 1
-
-        # How many person in maximum
-        one_person = np.sum(np_xy_coordinates[:, 1]) == 0.
-        nb_person = 1 if one_person else 2
-
-        # Extract only the interesting frames
+        # extract only the interesting frames
         np_xy_coordinates = np_xy_coordinates[timesteps]
-
-        # Normalize to 0-1
-        np_xy_coordinates[:, :, :, 0] /= float(self.original_w)
-        np_xy_coordinates[:, :, :, 1] /= float(self.original_h)
 
         # Replace NaN by 0
         np_xy_coordinates = np.nan_to_num(np_xy_coordinates)
@@ -319,7 +336,7 @@ class NTU(data.Dataset):
                 np_clip = self.extract_frames(self.get_video_fn(id), timesteps)
 
                 # Get the skeleton data
-                skeleton_fn = os.path.join(self.skeleton_dir, str(id) + '.skeleton')
+                skeleton_fn = os.path.join(self.skeleton_dir, str(id) + '.npy')
                 np_skeleton, nb_person = self.get_2D_skeleton(skeleton_fn, timesteps)
 
                 # Data processing on the super_video

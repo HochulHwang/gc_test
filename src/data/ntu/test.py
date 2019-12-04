@@ -52,6 +52,7 @@ def show_one_img(torch_img, torch_skeleton):
     np_img, np_skeleton = torch_img.numpy(), torch_skeleton.numpy()
 
     C, H, W = np_img.shape
+    # print(np_skeleton)
 
     # Rescale skeleton from -1,1 to 0,255
     if np.max(np_skeleton) < 1.0:
@@ -64,13 +65,14 @@ def show_one_img(torch_img, torch_skeleton):
     # Uint8 img
     img_array = np_img.astype('uint8')
     img_array = img_array.transpose([1, 2, 0])
+    # print(img_array.shape)
 
     # Create a figure. Equal aspect so circles look circular
     fig, ax = plt.subplots(1)
-    ax.set_aspect('equal')
+    # ax.set_aspect('equal')
 
     # Show the image
-    ax.imshow(img_array)
+    # ax.imshow(img_array)
 
     # Show the skeleton points
     for j in range(25):
@@ -78,16 +80,17 @@ def show_one_img(torch_img, torch_skeleton):
         ax.add_patch(circ)
 
     # Show the image
-    plt.show()
+    # plt.show()
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Video Loader')
     parser.add_argument('--root', metavar='DIR',
-                        default='/Users/fabien/Datasets/NTU-RGB-D',
+                        # default='/Users/fabien/Datasets/NTU-RGB-D',
+                        default='/home/hochul/Desktop/mini_syn_data/',
                         help='path to avi dir')
     parser.add_argument('--avi-dir', metavar='AVI',
-                        default='avi_256x256_30',
+                        default='avi_256x256_20',
                         help='path to avi dir')
     parser.add_argument('--width', default=224, type=int,
                         metavar='W', help='Width of the images')
@@ -96,6 +99,7 @@ if __name__ == '__main__':
     parser.add_argument('--time', default=8, type=int,
                         metavar='H', help='Number of timesteps to extract from a super_video')
     parser.add_argument('-j', '--workers', default=0, type=int, metavar='N',
+    # parser.add_argument('-j', '--workers', default=8, type=int, metavar='N',
                         help='number of data loading workers (default: 1)')
     parser.add_argument('-b', '--batch-size', default=2, type=int,
                         metavar='N', help='mini-batch size (default: 3)')

@@ -19,6 +19,7 @@ def get_datasets_n_loaders(options, cuda=False):
     train_loader = torch.utils.data.DataLoader(train_set,
                                                batch_size=options['batch_size'],
                                                num_workers=options['workers'],
+                                               shuffle=True, # for shuffle
                                                pin_memory=cuda,
                                                collate_fn=my_collate)
     val_loader = torch.utils.data.DataLoader(val_set,

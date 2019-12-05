@@ -81,7 +81,7 @@ def show_one_img(torch_img, torch_skeleton):
     # Show the image
     plt.show()
     # save the image
-    # plt.savefig('/home/hochul/Desktop/fig.png')
+    plt.savefig('/home/hochul/Desktop/fig.png')
 
 
 if __name__ == '__main__':

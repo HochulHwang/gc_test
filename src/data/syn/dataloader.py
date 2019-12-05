@@ -15,6 +15,8 @@ from torch.utils.data.dataloader import default_collate
 from random import shuffle
 import torch.nn.functional as F
 
+from data.syn.converter import CONVERTER_3D_TO_RGB
+
 
 class SYN(data.Dataset):
     """
@@ -62,13 +64,13 @@ class SYN(data.Dataset):
         self.nb_crops = 5 if self.dataset == 'test' else 1
 
         # ID fo training subjects
-        self.person_id_training = [103, 104]
+        self.person_id_training = [1, 2, 103, 104]
         if self.dataset == 'train':
             self.person_id_to_keep = self.person_id_training
         else:
             # self.person_id_to_keep = list(range(103, 106))
             # self.person_id_to_keep = [p for p in self.person_id_to_keep if p not in self.person_id_training]
-            self.person_id_to_keep = [105]
+            self.person_id_to_keep = [3, 105]
 
         # Get the videos
         self.list_video, self.dict_video_length = self.get_videos()
@@ -168,11 +170,21 @@ class SYN(data.Dataset):
         npy_skel = np.load(skeleton_file)
 
         # AIR
+        if person_idx <= 100:
+            rgb_converter = CONVERTER_3D_TO_RGB()
+            skl_rgb_normalized = rgb_converter(npy_skel)
+            if np.shape(skl_rgb_normalized)[1] == 1:
+                T = len(skl_rgb_normalized)
+                nb_person = 1
+            else:
+                T = int(len(skl_rgb_normalized)/2)
+                nb_person = 2
 
         # SYN
-        skl_rgb_normalized = npy_skel
-        T = len(skl_rgb_normalized)
-        nb_person = 1
+        else:
+            skl_rgb_normalized = npy_skel
+            T = len(skl_rgb_normalized)
+            nb_person = 1
 
         np_xy_coordinates = np.zeros((T, P, 25, 2)).astype(np.float32) # init numpy array
 

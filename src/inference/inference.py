@@ -28,7 +28,7 @@ def inference(options):
     print("* DATA ===> {}\n".format(options['root']))
 
     # Create the model
-    model = GlimpseClouds(num_classes=60,
+    model = GlimpseClouds(num_classes=55,
                           options=options)
 
     # Make a Data Parallel and CUDA model if possible
@@ -38,7 +38,7 @@ def inference(options):
         # model = torch.nn.DataParallel(model)
     model = torch.nn.DataParallel(model, device_ids=[0,1])
 
-        # Trainable params
+    # Trainable params
     trainable_params = filter(lambda p: p.requires_grad, model.parameters())
 
     # Print number of parameters

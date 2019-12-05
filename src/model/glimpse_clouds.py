@@ -114,7 +114,8 @@ class GlimpseClouds(nn.Module):
 
         # Regress
         pose = self.fc_pose(features)
-        pose = F.tanh(pose)  # to make sure the pose is between -1 and 1
+        # pose = F.tanh(pose)  # to make sure the pose is between -1 and 1
+        pose = torch.tanh(pose)  # to make sure the pose is between -1 and 1
 
         return pose
 
@@ -248,7 +249,7 @@ class GlimpseClouds(nn.Module):
                 # Estimate (x,y,scale_x,scale_y) of the glimpse
                 loc = self.mlp_glimpse_location(input_loc_params)  # (B, 4)
                 # ipdb.set_trace()
-                loc_xy = F.tanh(loc[:, :2])  # to make sure it is between -1 and 1
+                loc_xy = torch.tanh(loc[:, :2])  # to make sure it is between -1 and 1
                 loc_zooms = F.sigmoid(loc[:, 2:] + 3.)  # to make sure it is between 0 and 1 - +3 for starting with a zoom ~ 1
 
                 # Extract the corresponding features map with Spatial Transformer

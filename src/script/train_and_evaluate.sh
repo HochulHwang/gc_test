@@ -13,10 +13,12 @@ dir=$1
 ntu=$2
 
 # Training the CNN-backbone
-python src/main.py --dir $dir --root $ntu -b 10 -j 4 --epochs 10 --time 8 --pose-predictions
+#python src/main.py --dir $dir --root $ntu -b 10 -j 4 --epochs 10 --time 8 --pose-predictions
+CUDA_VISIBLE_DEVICES=0,1 python src/main.py --dir $dir --root $ntu -b 10 -j 8 --epochs 10 --time 8 --pose-predictions
 
 # Training the Glimpse Clouds
-python src/main.py --dir $dir --root $ntu -b 32 -j 4 --epochs 10 --time 8 --glimpse-clouds --pose-predictions
-
+#python src/main.py --dir $dir --root $ntu -b 32 -j 4 --epochs 10 --time 8 --glimpse-clouds --pose-predictions
+CUDA_VISIBLE_DEVICES=0,1 python src/main.py --dir $dir --root $ntu -b 32 -j 8 --epochs 10 --time 8 --glimpse-clouds --pose-predictions
 # Evaluating on the test set
-python src/main.py --dir $dir --root $ntu -b 32 -j 4 --time 8 --glimpse-clouds --pose-predictions -e
+#python src/main.py --dir $dir --root $ntu -b 32 -j 4 --time 8 --glimpse-clouds --pose-predictions -e
+CUDA_VISIBLE_DEVICES=0,1 python src/main.py --dir $dir --root $ntu -b 32 -j 8 --time 8 --glimpse-clouds --pose-predictions -e

@@ -11,7 +11,7 @@ import torch.utils.data.distributed
 from utils.meter import *
 import ipdb
 # from model import models
-from data.ntu.dataloader import my_collate
+from data.syn.dataloader import my_collate
 from model.glimpse_clouds import *
 from utils.dataset import get_datasets_n_loaders
 from inference.train_val import *

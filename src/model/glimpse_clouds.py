@@ -11,7 +11,7 @@ from utils.cuda import CUDA
 
 
 class GlimpseClouds(nn.Module):
-    def __init__(self, nb_classes=60, nb_glimpses=3, nb_workers=3,
+    def __init__(self, nb_classes=55, nb_glimpses=3, nb_workers=3,
                  options={},
                  **kwargs):
         super(GlimpseClouds, self).__init__()
@@ -192,7 +192,7 @@ class GlimpseClouds(nn.Module):
             # And compute the new one given the similarity matrix
             attention_W = previous_attention_w * similarity_matrix[:, :T - 1]  # (B,t-1,C,C)
             attention_W = torch.mean(attention_W, -2)  # (B,t,C)
-            exponential_time_decay = torch.exp(-torch.arange(0, t) / 4.0).repeat(attention_W.size(0), 1).view(B, t, 1)
+            exponential_time_decay = torch.exp(-torch.arange(0., t) / 4.0).repeat(attention_W.size(0), 1).view(B, t, 1)
             exponential_time_decay = exponential_time_decay.cuda() if CUDA else exponential_time_decay
             attention_W = attention_W * exponential_time_decay  # (B,t,C)
             attention_W = torch.sum(attention_W, 1)  # (B,C)
@@ -250,7 +250,7 @@ class GlimpseClouds(nn.Module):
                 loc = self.mlp_glimpse_location(input_loc_params)  # (B, 4)
                 # ipdb.set_trace()
                 loc_xy = torch.tanh(loc[:, :2])  # to make sure it is between -1 and 1
-                loc_zooms = F.sigmoid(loc[:, 2:] + 3.)  # to make sure it is between 0 and 1 - +3 for starting with a zoom ~ 1
+                loc_zooms = torch.sigmoid(loc[:, 2:] + 3.)  # to make sure it is between 0 and 1 - +3 for starting with a zoom ~ 1
 
                 # Extract the corresponding features map with Spatial Transformer
                 Z = zoom_ST(final_fm_t, loc_xy, loc_zooms, W, H, CUDA)  # (B, 2048, 7, 7)

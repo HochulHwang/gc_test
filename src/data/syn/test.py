@@ -81,13 +81,15 @@ def show_one_img(torch_img, torch_skeleton):
     # Show the image
     plt.show()
     # save the image
-    plt.savefig('/home/hochul/Desktop/fig.png')
+    plt.savefig('/home/hochul/Desktop/match.png')
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Video Loader')
     parser.add_argument('--root', metavar='DIR',
-                        default='/home/hochul/Desktop/mini_syn_data/',
+                        # mini-syn test
+                        # default='/home/hochul/Desktop/mini_syn_data/',
+                        default='/media/hochul/my_book/data',
                         help='path to avi dir')
     parser.add_argument('--avi-dir', metavar='AVI',
                         default='avi_256x256_20',

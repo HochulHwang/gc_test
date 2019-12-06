@@ -6,10 +6,13 @@ from sys import platform
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Glimpse Clouds')
     parser.add_argument('--dir', metavar='DIR',
-                        default='/home/hochul/Desktop/my_resume_syn',
+                        default='/home/hochul/Desktop/my_resume_AS_',
                         help='path to the resume dir')
     parser.add_argument('--root', metavar='ROOT',
-                        default='/home/hochul/Desktop/mini_syn_data',  # oggy
+                        # mini-syn test
+                        # default='/home/hochul/Desktop/mini_syn_data',
+                        # AIR+SYN
+                        default='/media/hochul/my_book/data',
                         help='path to dataset')
     parser.add_argument('-b', '--batch-size', default=2, type=int,
                         metavar='N', help='mini-batch size (default: 3)')
@@ -42,8 +45,10 @@ if __name__ == '__main__':
     options['global_model'] = True
     # options['glimpse_clouds'] = True
     # options['pose_predictions'] = True
-    options[
-        'root'] = '/Users/fabien/Datasets/NTU-RGB-D' if platform == "darwin" else '/home/hochul/Desktop/mini_syn_data'
+    # mini-syn test
+    # options['root'] = '/home/hochul/Desktop/mini_syn_data'
+    # AIR+SYN
+    options['root'] = '/media/hochul/my_book/data/'
     options['workers'] = 0 if platform == "darwin" else 4
 
     # Infer

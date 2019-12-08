@@ -21,4 +21,5 @@ CUDA_VISIBLE_DEVICES=0,1 python src/main.py --dir $dir --root $ntu -b 64 -j 8 --
 CUDA_VISIBLE_DEVICES=0,1 python src/main.py --dir $dir --root $ntu -b 64 -j 8 --epochs 10 --time 8 --glimpse-clouds --pose-predictions
 # Evaluating on the test set
 #python src/main.py --dir $dir --root $ntu -b 32 -j 4 --time 8 --glimpse-clouds --pose-predictions -e
-CUDA_VISIBLE_DEVICES=0,1 python src/main.py --dir $dir --root $ntu -b 64 -j 8 --time 8 --glimpse-clouds --pose-predictions -e
+#CUDA_VISIBLE_DEVICES=0,1 python src/main.py --dir $dir --root $ntu -b 64 -j 8 --time 8 --glimpse-clouds --pose-predictions -e # slow
+CUDA_VISIBLE_DEVICES=0,1 python src/main.py --dir $dir --root $ntu -b 32 -j 4 --time 8 --glimpse-clouds --pose-predictions -e

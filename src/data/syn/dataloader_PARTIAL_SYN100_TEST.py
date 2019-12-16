@@ -65,16 +65,17 @@ class SYN(data.Dataset):
 
         # ID fo training subjects
         # self.person_id_training = [1, 2, 103, 104]
-        self.person_id_training = list(range(1,101))
+        # self.person_id_training = list(range(1,101))
         if self.dataset == 'train':
-            self.person_id_training = [subj for subj in self.person_id_training if not subj%3==0]
-            self.syn_person = list(range(101,116))
-            self.person_id_to_keep = self.person_id_training + self.syn_person
+            # self.person_id_training = [subj for subj in self.person_id_training if not subj%3==0]
+            # self.syn_person = list(range(101,116))
+            # self.person_id_to_keep = self.person_id_training + self.syn_person
+            self.person_id_to_keep = list(range(1,16))
         else:
             # self.person_id_to_keep = list(range(103, 106))
             # self.person_id_to_keep = [p for p in self.person_id_to_keep if p not in self.person_id_training]
             # self.person_id_to_keep = [3, 105]
-            self.person_id_to_keep = [subj for subj in self.person_id_training if subj%3==0]
+            self.person_id_to_keep = list(range(16,21))
 
         # Get the videos
         self.list_video, self.dict_video_length = self.get_videos()

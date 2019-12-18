@@ -33,10 +33,10 @@ def inference(options):
 
     # Make a Data Parallel and CUDA model if possible
     model = model.cuda() if CUDA else model
-    if options['global_model']:
+    # if options['global_model']:
         # it seems that if I data parallel the input_var to my model goes anyway to the GPU even if I want to stay CPU based -- working oly for the global model
         # model = torch.nn.DataParallel(model)
-        model = torch.nn.DataParallel(model, device_ids=[0,1])
+    model = torch.nn.DataParallel(model, device_ids=[0,1])
 
     # Trainable params
     trainable_params = filter(lambda p: p.requires_grad, model.parameters())

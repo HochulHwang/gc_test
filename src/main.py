@@ -49,7 +49,7 @@ if __name__ == '__main__':
     # options['root'] = '/home/hochul/Desktop/mini_syn_data'
     # AIR+SYN
     options['root'] = '/media/hochul/my_book/data/'
-    options['workers'] = 0 if platform == "darwin" else 4
+    options['workers'] = 0 if platform == "darwin" else 12
 
     # Infer
     inference.inference(options)

@@ -17,6 +17,11 @@ import torch.nn.functional as F
 
 from data.syn.converter import CONVERTER_3D_TO_RGB
 
+# from data.access_video import (
+        # random as random_access,
+        # sequential as seq_access,
+        # )
+
 
 class SYN(data.Dataset):
     """
@@ -311,6 +316,10 @@ class SYN(data.Dataset):
                 np_clip = np.float32(np_clip)
             except Exception as e:
                 np_clip = decoded_frames
+        # np_clip_lst = seq_access(video_file, timesteps)
+        # np_clip = np.stack(np_clip_lst)
+        # np_clip = np_clip.transpose((3,0,1,2))
+        # np_clip = np_clip.astype(np.float32)
         return np_clip
 
     @staticmethod

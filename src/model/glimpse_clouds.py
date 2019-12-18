@@ -142,7 +142,8 @@ class GlimpseClouds(nn.Module):
             previous_features_cpu = previous_features_cpu.transpose(0, 1)  # (D,B)
             previous_features_cpu = previous_features_cpu.detach().cpu().numpy()
             covariance_cpu = np.cov(previous_features_cpu)  # (D,D) -> (2048,2048)
-            inv_covariance_cpu = np.linalg.inv(covariance_cpu)  # *** numpy.linalg.linalg.LinAlgError: Singular matrix
+            # inv_covariance_cpu = np.linalg.inv(covariance_cpu)  # *** numpy.linalg.linalg.LinAlgError: Singular matrix
+            inv_covariance_cpu = np.load("inv_covariance_cpu.npy")
             # inv_covariance_gpu = Variable(torch.from_numpy(inv_covariance_cpu).type(torch.FloatTensor),
             #                               requires_grad=True).repeat(B, 1, 1)  # (8, 2048,2048)
             inv_covariance_gpu = Variable(torch.from_numpy(inv_covariance_cpu).type(torch.FloatTensor),
